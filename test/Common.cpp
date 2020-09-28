@@ -19,21 +19,8 @@ const byte d5 = 15;
 const byte d6 = 16;
 const byte d7 = 17;
 
-<<<<<<< HEAD
-GodmodeState *state = GODMODE();
-const int logSize = 100;
-int pinLog[logSize], logIndex = 0;
-
 class BitCollector : public DataStreamObserver
 {
-public:
-  BitCollector() : DataStreamObserver(false, false) {}
-  virtual void onBit(bool aBit)
-  {
-    if (aBit && logIndex < logSize)
-    {
-=======
-class BitCollector : public DataStreamObserver {
 private:
   bool fourBitMode;
   bool showData;
@@ -42,7 +29,8 @@ private:
 
 public:
   BitCollector(bool showData = false, bool fourBitMode = true)
-      : DataStreamObserver(false, false) {
+      : DataStreamObserver(false, false)
+  {
     this->fourBitMode = fourBitMode;
     this->showData = showData;
     state = GODMODE();
@@ -52,9 +40,10 @@ public:
 
   ~BitCollector() { state->digitalPin[enable].removeObserver("lcd"); }
 
-  virtual void onBit(bool aBit) {
-    if (aBit) {
->>>>>>> 16f59be1694ac6d5571e77da27f10a2e3c38e8fd
+  virtual void onBit(bool aBit)
+  {
+    if (aBit)
+    {
       int value = 0;
       value = (value << 1) + state->digitalPin[rs];
       value = (value << 1) + state->digitalPin[rw];
@@ -66,34 +55,23 @@ public:
       value = (value << 1) + state->digitalPin[d2];
       value = (value << 1) + state->digitalPin[d1];
       value = (value << 1) + state->digitalPin[d0];
-<<<<<<< HEAD
-      pinLog[logIndex++] = value;
-      // std::bitset<16> bits(value);
-      // std::cout << value << " : " << bits << std::endl;
-    }
-  }
-
-  virtual String observerName() const { return "BitCollector"; }
-};
-
-unittest(className)
-{
-  LiquidCrystal_Test lcd(rs, enable, d4, d5, d6, d7);
-  std::cout << "TESTING: " << lcd.className() << std::endl;
-}
-=======
       pinLog.push_back(value);
-      if (showData) {
+      if (showData)
+      {
         std::cout.width(5);
         std::cout << std::right << value << " : " << ((value >> 9) & 1) << "  "
                   << ((value >> 8) & 1) << "  ";
-        if (fourBitMode) {
+        if (fourBitMode)
+        {
           std::bitset<4> bits((value >> 4) & 0x0F);
-          if ((pinLog.size() - 1) % 2) {
+          if ((pinLog.size() - 1) % 2)
+          {
             std::cout << "    ";
           }
           std::cout << bits;
-        } else {
+        }
+        else
+        {
           std::bitset<8> bits(value & 0xFF);
           std::cout << bits;
         }
@@ -102,12 +80,16 @@ unittest(className)
     }
   }
 
-  bool isEqualTo(const vector<int> &expected) {
-    if (pinLog.size() != expected.size()) {
+  bool isEqualTo(const vector<int> &expected)
+  {
+    if (pinLog.size() != expected.size())
+    {
       return false;
     }
-    for (int i = 0; i < pinLog.size(); ++i) {
-      if (pinLog.at(i) != expected.at(i)) {
+    for (int i = 0; i < pinLog.size(); ++i)
+    {
+      if (pinLog.at(i) != expected.at(i))
+      {
         return false;
       }
     }
@@ -116,27 +98,21 @@ unittest(className)
 
   virtual String observerName() const { return "BitCollector"; }
 };
->>>>>>> 16f59be1694ac6d5571e77da27f10a2e3c38e8fd
 
 // we don't look at the pins here, just verify that we can call the constructors
-unittest(constructors) {
+unittest(constructors)
+{
   LiquidCrystal_Test lcd1(rs, enable, d4, d5, d6, d7);
   LiquidCrystal_Test lcd2(rs, rw, enable, d4, d5, d6, d7);
   LiquidCrystal_Test lcd3(rs, enable, d0, d1, d2, d3, d4, d5, d6, d7);
   LiquidCrystal_Test lcd4(rs, rw, enable, d0, d1, d2, d3, d4, d5, d6, d7);
   LiquidCrystal_Test *lcd5 = new LiquidCrystal_Test(rs, enable, d4, d5, d6, d7);
-<<<<<<< HEAD
-  LiquidCrystal_Test *lcd6 = new LiquidCrystal_Test(rs, rw, enable, d4, d5, d6, d7);
-  LiquidCrystal_Test *lcd7 = new LiquidCrystal_Test(rs, enable, d0, d1, d2, d3, d4, d5, d6, d7);
-  LiquidCrystal_Test *lcd8 = new LiquidCrystal_Test(rs, rw, enable, d0, d1, d2, d3, d4, d5, d6, d7);
-=======
   LiquidCrystal_Test *lcd6 =
       new LiquidCrystal_Test(rs, rw, enable, d4, d5, d6, d7);
   LiquidCrystal_Test *lcd7 =
       new LiquidCrystal_Test(rs, enable, d0, d1, d2, d3, d4, d5, d6, d7);
   LiquidCrystal_Test *lcd8 =
       new LiquidCrystal_Test(rs, rw, enable, d0, d1, d2, d3, d4, d5, d6, d7);
->>>>>>> 16f59be1694ac6d5571e77da27f10a2e3c38e8fd
   assertNotNull(lcd5);
   assertNotNull(lcd6);
   assertNotNull(lcd7);
@@ -161,35 +137,12 @@ unittest(constructors) {
     0 : 0  0  0000          \
    96 : 0  0      0110       increment cursor position, no display shift
 */
-unittest(init) {
+unittest(init)
+{
   vector<int> expected{48, 48, 48, 32, 32, 0, 0, 192, 0, 16, 0, 96};
   BitCollector pinValues(false); // test the next line (a constructor)
   LiquidCrystal_Test lcd(rs, enable, d4, d5, d6, d7);
-<<<<<<< HEAD
-  state->digitalPin[enable].removeObserver("lcd");
-  /*     rs rw  d7 to d0
-     48 : 0  0  00110000      set to 8-bit mode (takes three tries)
-     48 : 0  0  00110000      set to 8-bit mode
-     48 : 0  0  00110000      set to 8-bit mode
-     32 : 0  0  00100000      set to 4-bit mode, 1 line, 8-bit font
-     32 : 0  0  0010          \
-      0 : 0  0      0000       set to 4-bit mode, 1 line, 8-bit font
-      0 : 0  0  0000          \
-    192 : 0  0      1100       display on, cursor off, blink off
-      0 : 0  0  0000          \
-    016 : 0  0      0001       clear display
-      0 : 0  0  0000          \
-     96 : 0  0      0110       increment cursor position, no display shift
-   */
-  int expected[12] = {48, 48, 48, 32, 32, 0, 0, 192, 0, 16, 0, 96};
-  assertEqual(12, logIndex);
-  for (int i = 0; i < logIndex; ++i)
-  {
-    assertEqual(expected[i], pinLog[i]);
-  }
-=======
   assertTrue(pinValues.isEqualTo(expected));
->>>>>>> 16f59be1694ac6d5571e77da27f10a2e3c38e8fd
 }
 
 /*     rs rw  d7 to d0
@@ -206,33 +159,13 @@ unittest(init) {
     0 : 0  0  0000          \
    96 : 0  0      0110       increment cursor position, no display shift
 */
-unittest(begin) {
+unittest(begin)
+{
   vector<int> expected{48, 48, 48, 32, 32, 128, 0, 192, 0, 16, 0, 96};
   LiquidCrystal_Test lcd(rs, enable, d4, d5, d6, d7);
   BitCollector pinValues(false); // test the next line
   lcd.begin(16, 2);
-<<<<<<< HEAD
-  state->digitalPin[enable].removeObserver("lcd");
-  /*     rs rw  d7 to d0
-     48 : 0  0  00110000      set to 8-bit mode (takes three tries)
-     48 : 0  0  00110000      set to 8-bit mode
-     48 : 0  0  00110000      set to 8-bit mode
-     32 : 0  0  00100000      set to 4-bit mode, 1 line, 8-bit font
-     32 : 0  0  0010          \
-    128 : 0  0      1000       set to 4-bit mode, 2 lines, 8-bit font
-      0 : 0  0  0000          \
-    192 : 0  0      1100       display on, cursor off, blink off
-      0 : 0  0  0000          \
-    016 : 0  0      0001       clear display
-      0 : 0  0  0000          \
-     96 : 0  0      0110       increment cursor position, no display shift
-   */
-  int expected[12] = {48, 48, 48, 32, 32, 128, 0, 192, 0, 16, 0, 96};
-  assertEqual(12, logIndex);
-  for (int i = 0; i < logIndex; ++i)
-  {
-    assertEqual(expected[i], pinLog[i]);
-  }
+  assertTrue(pinValues.isEqualTo(expected));
 }
 
 unittest(blink)
@@ -279,8 +212,6 @@ unittest(noBlink)
   {
     assertEqual(expected[i], pinLog[i]);
   }
-=======
-  assertTrue(pinValues.isEqualTo(expected));
 }
 
 /*     rs rw  d7 to d0
@@ -303,8 +234,9 @@ unittest(noBlink)
   512 : 1  0  0000
   512 : 1  0      0000
 */
-unittest(createChar) {
-  vector<int> expected{64,  0,   512, 512, 528, 528, 512, 512, 512,
+unittest(createChar)
+{
+  vector<int> expected{64, 0, 512, 512, 528, 528, 512, 512, 512,
                        512, 528, 528, 512, 736, 512, 512, 512, 512};
   byte smiley[8] = {B00000, B10001, B00000, B00000, B10001, B01110, B00000};
   LiquidCrystal_Test lcd(rs, enable, d4, d5, d6, d7);
@@ -317,7 +249,8 @@ unittest(createChar) {
     0 : 0  0  0000          \
    16 : 0  0      0001       clear
 */
-unittest(clear) {
+unittest(clear)
+{
   vector<int> expected{0, 16};
   LiquidCrystal_Test lcd(rs, enable, d4, d5, d6, d7);
   lcd.begin(16, 2);
@@ -338,7 +271,8 @@ unittest(clear) {
     608 : 1  0  0110      \
     752 : 1  0      1111  0x6F o
 */
-unittest(print_hello) {
+unittest(print_hello)
+{
   vector<int> expected{576, 640, 608, 592, 608, 704, 608, 704, 608, 752};
   LiquidCrystal_Test lcd(rs, enable, d4, d5, d6, d7);
   lcd.begin(16, 2);
@@ -351,7 +285,8 @@ unittest(print_hello) {
    16 : 0  0  0001      \
   128 : 0  0      1000   00011000 = shift display left
 */
-unittest(scrollDisplayLeft) {
+unittest(scrollDisplayLeft)
+{
   vector<int> expected{16, 128};
   LiquidCrystal_Test lcd(rs, enable, d4, d5, d6, d7);
   lcd.begin(16, 2);
@@ -364,7 +299,8 @@ unittest(scrollDisplayLeft) {
    16 : 0  0  0001      first half of command
   192 : 0  0      1100  full command: 00011100 = shift display right
 */
-unittest(scrollDisplayRight) {
+unittest(scrollDisplayRight)
+{
   vector<int> expected{16, 192};
   LiquidCrystal_Test lcd(rs, enable, d4, d5, d6, d7);
   lcd.begin(16, 2);
@@ -373,7 +309,8 @@ unittest(scrollDisplayRight) {
   assertTrue(pinValues.isEqualTo(expected));
 }
 
-unittest(failIfWrongSize) {
+unittest(failIfWrongSize)
+{
   vector<int> expected{0};
   LiquidCrystal_Test lcd(rs, enable, d4, d5, d6, d7);
   lcd.begin(16, 2);
@@ -382,12 +319,12 @@ unittest(failIfWrongSize) {
   assertFalse(pinValues.isEqualTo(expected));
 }
 
-unittest(failIfWrongValues) {
+unittest(failIfWrongValues)
+{
   vector<int> expected{0, 255};
   LiquidCrystal_Test lcd(rs, enable, d4, d5, d6, d7);
   lcd.begin(16, 2);
   BitCollector pinValues(false); // test the next line
   lcd.clear();
   assertFalse(pinValues.isEqualTo(expected));
->>>>>>> 16f59be1694ac6d5571e77da27f10a2e3c38e8fd
 }
