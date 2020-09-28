@@ -28,8 +28,7 @@ private:
 
 public:
   BitCollector(bool showData = false, bool fourBitMode = true)
-      : DataStreamObserver(false, false)
-  {
+      : DataStreamObserver(false, false) {
     this->fourBitMode = fourBitMode;
     this->showData = showData;
     state = GODMODE();
@@ -39,8 +38,7 @@ public:
 
   ~BitCollector() { state->digitalPin[enable].removeObserver("lcd"); }
 
-  virtual void onBit(bool aBit)
-  {
+  virtual void onBit(bool aBit) {
     if (aBit)
     {
       int value = 0;
@@ -79,8 +77,7 @@ public:
     }
   }
 
-  bool isEqualTo(const vector<int> &expected)
-  {
+  bool isEqualTo(const vector<int> &expected) {
     if (pinLog.size() != expected.size())
     {
       return false;
@@ -280,8 +277,7 @@ unittest(scrollDisplayRight) {
   assertTrue(pinValues.isEqualTo(expected));
 }
 
-unittest(failIfWrongSize)
-{
+unittest(failIfWrongSize) {
   vector<int> expected{0};
   LiquidCrystal_Test lcd(rs, enable, d4, d5, d6, d7);
   lcd.begin(16, 2);
@@ -290,8 +286,7 @@ unittest(failIfWrongSize)
   assertFalse(pinValues.isEqualTo(expected));
 }
 
-unittest(failIfWrongValues)
-{
+unittest(failIfWrongValues) {
   vector<int> expected{0, 255};
   LiquidCrystal_Test lcd(rs, enable, d4, d5, d6, d7);
   lcd.begin(16, 2);
