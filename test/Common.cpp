@@ -39,8 +39,7 @@ public:
   ~BitCollector() { state->digitalPin[enable].removeObserver("lcd"); }
 
   virtual void onBit(bool aBit) {
-    if (aBit)
-    {
+    if (aBit) {
       int value = 0;
       value = (value << 1) + state->digitalPin[rs];
       value = (value << 1) + state->digitalPin[rw];
@@ -53,22 +52,17 @@ public:
       value = (value << 1) + state->digitalPin[d1];
       value = (value << 1) + state->digitalPin[d0];
       pinLog.push_back(value);
-      if (showData)
-      {
+      if (showData) {
         std::cout.width(5);
         std::cout << std::right << value << " : " << ((value >> 9) & 1) << "  "
                   << ((value >> 8) & 1) << "  ";
-        if (fourBitMode)
-        {
+        if (fourBitMode) {
           std::bitset<4> bits((value >> 4) & 0x0F);
-          if ((pinLog.size() - 1) % 2)
-          {
+          if ((pinLog.size() - 1) % 2) {
             std::cout << "    ";
           }
           std::cout << bits;
-        }
-        else
-        {
+        } else {
           std::bitset<8> bits(value & 0xFF);
           std::cout << bits;
         }
@@ -78,14 +72,11 @@ public:
   }
 
   bool isEqualTo(const vector<int> &expected) {
-    if (pinLog.size() != expected.size())
-    {
+    if (pinLog.size() != expected.size()) {
       return false;
     }
-    for (int i = 0; i < pinLog.size(); ++i)
-    {
-      if (pinLog.at(i) != expected.at(i))
-      {
+    for (int i = 0; i < pinLog.size(); ++i) {
+      if (pinLog.at(i) != expected.at(i)) {
         return false;
       }
     }
@@ -208,7 +199,7 @@ unittest(noBlink) {
   512 : 1  0      0000
 */
 unittest(createChar) {
-  vector<int> expected{64, 0, 512, 512, 528, 528, 512, 512, 512,
+  vector<int> expected{64,  0,   512, 512, 528, 528, 512, 512, 512,
                        512, 528, 528, 512, 736, 512, 512, 512, 512};
   byte smiley[8] = {B00000, B10001, B00000, B00000, B10001, B01110, B00000};
   LiquidCrystal_Test lcd(rs, enable, d4, d5, d6, d7);
