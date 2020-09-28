@@ -168,50 +168,32 @@ unittest(begin)
   assertTrue(pinValues.isEqualTo(expected));
 }
 
-unittest(blink)
-{
-  state->reset();
-  BitCollector enableBits;
-  logIndex = 0;
-  LiquidCrystal_Test lcd(rs, enable, d4, d5, d6, d7);
-  lcd.begin(16, 2);
-  state->digitalPin[enable].addObserver("lcd", &enableBits);
-  lcd.blink();
-  state->digitalPin[enable].removeObserver("lcd");
   /*     rs rw  d7 to d0
       0 : 0  0  0000
     208 : 0  0      1101  00001101 = display on, cursor blink on
    */
-  const int expectedSize = 2;
-  int expected[expectedSize] = {0, 208};
-  assertEqual(expectedSize, logIndex);
-  for (int i = 0; i < expectedSize; ++i)
-  {
-    assertEqual(expected[i], pinLog[i]);
-  }
-}
-
-unittest(noBlink)
+unittest(blink)
 {
-  state->reset();
-  BitCollector enableBits;
-  logIndex = 0;
+  vector<int> expected{0, 192};
   LiquidCrystal_Test lcd(rs, enable, d4, d5, d6, d7);
   lcd.begin(16, 2);
-  state->digitalPin[enable].addObserver("lcd", &enableBits);
+  BitCollector pinValues(false); // test the next line
   lcd.noBlink();
-  state->digitalPin[enable].removeObserver("lcd");
+  assertTrue(pinValues.isEqualTo(expected));
+}
+
   /*     rs rw  d7 to d0
       0 : 0  0  0000
     192 : 0  0      1100  00001100 = display on, cursor blink off
    */
-  const int expectedSize = 2;
-  int expected[expectedSize] = {0, 192};
-  assertEqual(expectedSize, logIndex);
-  for (int i = 0; i < expectedSize; ++i)
-  {
-    assertEqual(expected[i], pinLog[i]);
-  }
+unittest(noBlink)
+{
+  vector<int> expected{0, 192};
+  LiquidCrystal_Test lcd(rs, enable, d4, d5, d6, d7);
+  lcd.begin(16, 2);
+  BitCollector pinValues(false); // test the next line
+  lcd.noBlink();
+  assertTrue(pinValues.isEqualTo(expected));
 }
 
 /*     rs rw  d7 to d0
