@@ -144,7 +144,7 @@ unittest(blink)
   state->digitalPin[enable].removeObserver("lcd");
   /*     rs rw  d7 to d0
       0 : 0  0  0000
-    208 : 0  0      1101  00001101 = diplay on, cursor blink on
+    208 : 0  0      1101  00001101 = display on, cursor blink on
    */
   const int expectedSize = 2;
   int expected[expectedSize] = {0, 208};
