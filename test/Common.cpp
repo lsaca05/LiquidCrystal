@@ -19,8 +19,7 @@ const byte d5 = 15;
 const byte d6 = 16;
 const byte d7 = 17;
 
-class BitCollector : public DataStreamObserver
-{
+class BitCollector : public DataStreamObserver {
 private:
   bool fourBitMode;
   bool showData;
@@ -100,8 +99,7 @@ public:
 };
 
 // we don't look at the pins here, just verify that we can call the constructors
-unittest(constructors)
-{
+unittest(constructors) {
   LiquidCrystal_Test lcd1(rs, enable, d4, d5, d6, d7);
   LiquidCrystal_Test lcd2(rs, rw, enable, d4, d5, d6, d7);
   LiquidCrystal_Test lcd3(rs, enable, d0, d1, d2, d3, d4, d5, d6, d7);
@@ -137,8 +135,7 @@ unittest(constructors)
     0 : 0  0  0000          \
    96 : 0  0      0110       increment cursor position, no display shift
 */
-unittest(init)
-{
+unittest(init) {
   vector<int> expected{48, 48, 48, 32, 32, 0, 0, 192, 0, 16, 0, 96};
   BitCollector pinValues(false); // test the next line (a constructor)
   LiquidCrystal_Test lcd(rs, enable, d4, d5, d6, d7);
@@ -159,8 +156,7 @@ unittest(init)
     0 : 0  0  0000          \
    96 : 0  0      0110       increment cursor position, no display shift
 */
-unittest(begin)
-{
+unittest(begin) {
   vector<int> expected{48, 48, 48, 32, 32, 128, 0, 192, 0, 16, 0, 96};
   LiquidCrystal_Test lcd(rs, enable, d4, d5, d6, d7);
   BitCollector pinValues(false); // test the next line
@@ -168,12 +164,11 @@ unittest(begin)
   assertTrue(pinValues.isEqualTo(expected));
 }
 
-  /*     rs rw  d7 to d0
+/*     rs rw  d7 to d0
       0 : 0  0  0000
     208 : 0  0      1101  00001101 = display on, cursor blink on
-   */
-unittest(blink)
-{
+*/
+unittest(blink) {
   vector<int> expected{0, 192};
   LiquidCrystal_Test lcd(rs, enable, d4, d5, d6, d7);
   lcd.begin(16, 2);
@@ -182,12 +177,11 @@ unittest(blink)
   assertTrue(pinValues.isEqualTo(expected));
 }
 
-  /*     rs rw  d7 to d0
+/*     rs rw  d7 to d0
       0 : 0  0  0000
     192 : 0  0      1100  00001100 = display on, cursor blink off
-   */
-unittest(noBlink)
-{
+*/
+unittest(noBlink) {
   vector<int> expected{0, 192};
   LiquidCrystal_Test lcd(rs, enable, d4, d5, d6, d7);
   lcd.begin(16, 2);
@@ -216,8 +210,7 @@ unittest(noBlink)
   512 : 1  0  0000
   512 : 1  0      0000
 */
-unittest(createChar)
-{
+unittest(createChar) {
   vector<int> expected{64, 0, 512, 512, 528, 528, 512, 512, 512,
                        512, 528, 528, 512, 736, 512, 512, 512, 512};
   byte smiley[8] = {B00000, B10001, B00000, B00000, B10001, B01110, B00000};
@@ -231,8 +224,7 @@ unittest(createChar)
     0 : 0  0  0000          \
    16 : 0  0      0001       clear
 */
-unittest(clear)
-{
+unittest(clear) {
   vector<int> expected{0, 16};
   LiquidCrystal_Test lcd(rs, enable, d4, d5, d6, d7);
   lcd.begin(16, 2);
@@ -253,8 +245,7 @@ unittest(clear)
     608 : 1  0  0110      \
     752 : 1  0      1111  0x6F o
 */
-unittest(print_hello)
-{
+unittest(print_hello) {
   vector<int> expected{576, 640, 608, 592, 608, 704, 608, 704, 608, 752};
   LiquidCrystal_Test lcd(rs, enable, d4, d5, d6, d7);
   lcd.begin(16, 2);
@@ -267,8 +258,7 @@ unittest(print_hello)
    16 : 0  0  0001      \
   128 : 0  0      1000   00011000 = shift display left
 */
-unittest(scrollDisplayLeft)
-{
+unittest(scrollDisplayLeft) {
   vector<int> expected{16, 128};
   LiquidCrystal_Test lcd(rs, enable, d4, d5, d6, d7);
   lcd.begin(16, 2);
@@ -281,8 +271,7 @@ unittest(scrollDisplayLeft)
    16 : 0  0  0001      first half of command
   192 : 0  0      1100  full command: 00011100 = shift display right
 */
-unittest(scrollDisplayRight)
-{
+unittest(scrollDisplayRight) {
   vector<int> expected{16, 192};
   LiquidCrystal_Test lcd(rs, enable, d4, d5, d6, d7);
   lcd.begin(16, 2);
