@@ -67,6 +67,9 @@ public:
   bool isBlink() { return _blink; }
   bool isCursor() { return _cursor; }
   bool isDisplay() { return _display; }
+  byte *getCustomCharacter(uint8_t customChar) {
+    return _customChars[customChar];
+  }
   int getCursorCol() { return _col; }
   int getCursorRow() { return _row; }
 
@@ -75,6 +78,7 @@ private:
   int _col, _cols, _row, _rows, _rs_pin;
   bool _display, _cursor, _blink, _autoscroll;
   std::vector<std::string> _lines;
+  byte _customChars[8][8];
   void init(uint8_t rs);
 };
 
