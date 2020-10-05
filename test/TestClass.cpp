@@ -213,13 +213,17 @@ unittest(blink_high) {
 unittest(cursor_high) {
   // create lcd object
   LiquidCrystal_Test lcd(rs, enable, d4, d5, d6, d7);
-  // TODO
-}
 
-unittest(noCursor_high) {
-  // create lcd object
-  LiquidCrystal_Test lcd(rs, enable, d4, d5, d6, d7);
-  // TODO
+  // assert startup no cursor is set
+  assertEqual(false, lcd.isCursor());
+
+  // check cursor function
+  lcd.cursor();
+  assertEqual(true, lcd.isCursor());
+
+  // check noCursor function
+  lcd.noCursor();
+  assertEqual(false, lcd.isCursor());
 }
 
 unittest_main()
