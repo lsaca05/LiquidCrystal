@@ -197,17 +197,17 @@ unittest(blink_high) {
   bool blinking = lcd.isBlink();
 
   // check default - noBlink
-  assertEqual(0, blinking);
+  assertFalse(blinking);
 
   // check blink function
   lcd.blink();
   blinking = lcd.isBlink();
-  assertEqual(1, blinking);
+  assertTrue(blinking);
 
   // check noBlink function
   lcd.noBlink();
   blinking = lcd.isBlink();
-  assertEqual(0, blinking);
+  assertFalse(blinking);
 }
 
 unittest(cursor_high) {
