@@ -168,7 +168,38 @@ unittest(setCursor_high) {
 unittest(home_high) {
   // create lcd object
   LiquidCrystal_Test lcd(rs, enable, d4, d5, d6, d7);
-  // TODO
+  lcd.begin(16, 2);
+
+  // Go home
+  lcd.home();
+  // Check Cursor is at upper-left
+  assertEqual(0, lcd.getCursorCol());
+  assertEqual(0, lcd.getCursorRow());
+
+  // Set Cursor to new location
+  lcd.setCursor(3, 1);
+  // Check Cursor Location
+  assertEqual(3, lcd.getCursorCol());
+  assertEqual(1, lcd.getCursorRow());
+
+  // Return Home
+  lcd.home();
+  // Check Cursor is at upper-left
+  assertEqual(0, lcd.getCursorCol());
+  assertEqual(0, lcd.getCursorRow());
+
+  /* When print works
+  // Print message
+  lcd.print("Test line");
+  //Check Cursor Location
+  assertNotEqual(0, getCursorCol());;
+
+  // Return Home
+  lcd.home();
+  // Check Cursor is at upper-left
+  assertEqual(0, lcd.getCursorCol());
+  assertEqual(0, lcd.getCursorRow());
+  */
 }
 
 unittest(display_high) {
