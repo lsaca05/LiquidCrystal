@@ -46,6 +46,11 @@ void LiquidCrystal_CI::init(uint8_t rs) {
   _blink = false;
   _lines.clear();
   _lines.resize(_rows);
+  for (int character = 0; character < 8; character++) {
+    for (int bite = 0; bite < 8; bite++) {
+      _customChars[character][bite] = B00000;
+    }
+  }
   LiquidCrystal_CI::_instances[_rs_pin] = this;
 }
 
@@ -141,6 +146,10 @@ void LiquidCrystal_CI::noAutoscroll() {
 // with custom characters
 void LiquidCrystal_CI::createChar(uint8_t location, uint8_t charmap[]) {
   LiquidCrystal_Base::createChar(location, charmap);
+  // fill the customChars with the charmap
+  for (int line = 0; line < 8; line++) {
+    _customChars[location][line] = charmap[line];
+  }
 }
 
 inline size_t LiquidCrystal_CI::write(uint8_t value) {
